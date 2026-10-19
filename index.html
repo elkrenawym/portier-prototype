@@ -2950,9 +2950,11 @@ window.PortierFX = (() => {
         c.style.width = (w + extra / 2) + 'px';
         if (depth < 3) adapt(c, w, extra / 2, depth + 1);
       } else {
-        const mid = left + w / 2;
-        if (mid > parentW * 0.6) c.style.left = (left + extra) + 'px';
-        else if (mid >= parentW * 0.4) c.style.left = (left + extra / 2) + 'px';
+        // edge-anchored things follow their edge; anything floating inside the screen
+        // (orbits, keypads, centred art) moves as one centred composition
+        const right = left + w;
+        if (right >= parentW - 40 && left > parentW * 0.45) c.style.left = (left + extra) + 'px';
+        else if (left > 40) c.style.left = (left + extra / 2) + 'px';
       }
     }
   }
@@ -4619,6 +4621,7 @@ window.PortierFX = (() => {
   const W = 390;
   const device = document.getElementById('device');
   const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const TOUCH = matchMedia('(pointer: coarse)').matches;
   const EASE = {
     out: 'cubic-bezier(0.23, 1, 0.32, 1)',
     expo: 'cubic-bezier(0.16, 1, 0.3, 1)',
@@ -4815,9 +4818,12 @@ window.PortierFX = (() => {
       return;
     }
     const op = getComputedStyle(el).opacity;
+    // blur on dozens of layers at once stutters on phones; there the reveal is motion + fade only
     const kf = reduce
       ? [{ opacity: 0 }, { opacity: op }]
-      : [{ opacity: 0, transform: 'translateY(14px)', filter: 'blur(6px)' }, { opacity: op, transform: 'none', filter: 'blur(0)' }];
+      : TOUCH
+        ? [{ opacity: 0, transform: 'translate3d(0, 16px, 0)' }, { opacity: op, transform: 'none' }]
+        : [{ opacity: 0, transform: 'translateY(14px)', filter: 'blur(6px)' }, { opacity: op, transform: 'none', filter: 'blur(0)' }];
     const a = anim(el, kf, { duration: 760, delay, easing: EASE.expo });
     // release filter/transform once done so hover/press transforms behave
     a.onfinish = () => a.cancel();
@@ -5219,7 +5225,7 @@ window.PortierFX = (() => {
       const quick = t.dur < 0.2;
       dur = quick ? 260 : 520;
       if (!sameNav || !quick) {
-        anim(to, [{ opacity: 0, transform: quick ? 'none' : 'scale(1.015)', filter: quick ? 'none' : 'blur(10px)' }, { opacity: 1, transform: 'none', filter: 'blur(0)' }], { duration: dur, easing: EASE.out });
+        anim(to, [{ opacity: 0, transform: quick ? 'none' : 'scale(1.015)', filter: quick || TOUCH ? 'none' : 'blur(10px)' }, { opacity: 1, transform: 'none', filter: quick || TOUCH ? 'none' : 'blur(0)' }], { duration: dur, easing: EASE.out });
       } else {
         tabMorph(from, to);
         dur = 460;
