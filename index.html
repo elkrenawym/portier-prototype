@@ -3413,9 +3413,16 @@ window.PortierFX = (() => {
   /* ---------------- physical cards: tilt, foil sheen, touch ---------------- */
   function cards(sec) {
     const root = rootOf(sec);
-    const inner = [...root.querySelectorAll('[data-name="Invitation card"], [data-name="Scan card"]')];
+    let inner = [...root.querySelectorAll('[data-name="Invitation card"], [data-name="Scan card"]')];
     if (!inner.length) return;
-    const tops = [...new Set(inner.map(c => { let e = c; while (e.parentElement && e.parentElement !== root) e = e.parentElement; return e; }))];
+    const topOf = c => { let e = c; while (e.parentElement && e.parentElement !== root) e = e.parentElement; return e; };
+    // the design stacks a blurred copy of the card behind it as a glow; Safari renders that copy
+    // sharp inside its filter box (a second card plus a rectangle), so drop it and glow the real card
+    const glows = inner.filter(c => /blur-\[/.test(c.className) || c.parentElement.closest('[data-name="Invitation card"], [data-name="Scan card"]'));
+    glows.forEach(g => { if (!g.parentElement.closest('[data-name="Invitation card"], [data-name="Scan card"]')) topOf(g).style.display = 'none'; });
+    inner = inner.filter(c => !glows.includes(c) && topOf(c).style.display !== 'none');
+    if (!inner.length) return;
+    const tops = [...new Set(inner.map(topOf))];
     inner.forEach(c => {
       if (getComputedStyle(c).position === 'static') c.style.position = 'relative';
       const sheen = document.createElement('div');
@@ -3445,8 +3452,8 @@ window.PortierFX = (() => {
       rx += (gx - rx) * 0.08; ry += (gy - ry) * 0.08;
       tops.forEach(el => {
         el.style.transform = `perspective(900px) rotateX(${rx.toFixed(2)}deg) rotateY(${ry.toFixed(2)}deg) translateZ(0)`;
-        el.style.filter = `drop-shadow(${(-ry * 0.8).toFixed(1)}px ${(16 + rx).toFixed(1)}px 22px rgba(0,0,0,0.55))`;
       });
+      inner.forEach(c => { c.style.boxShadow = `${(-ry * 0.8).toFixed(1)}px ${(18 + rx).toFixed(1)}px 34px rgba(0,0,0,0.5), 0 0 48px rgba(217,189,132,0.16)`; });
       inner.forEach(c => { c._sheen.style.backgroundPosition = `${50 + ry * 4.5}% ${50 - rx * 4}%`; });
     }), 1100);
   }
