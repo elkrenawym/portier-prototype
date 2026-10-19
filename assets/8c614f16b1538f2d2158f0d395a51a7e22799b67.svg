@@ -1,0 +1,16 @@
+<svg preserveAspectRatio="none" overflow="visible" style="display: block;" width="64" height="64" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g id="QR Code">
+<path id="Stroke" d="M10.6667 8H18.6667C20.1394 8 21.3333 9.19391 21.3333 10.6667V18.6667C21.3333 20.1394 20.1394 21.3333 18.6667 21.3333H10.6667C9.19391 21.3333 8 20.1394 8 18.6667V10.6667C8 9.19391 9.19391 8 10.6667 8Z" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" stroke="#FAFAFA"/>
+<path id="Stroke_2" d="M45.3333 8H53.3333C54.8061 8 56 9.19391 56 10.6667V18.6667C56 20.1394 54.8061 21.3333 53.3333 21.3333H45.3333C43.8606 21.3333 42.6667 20.1394 42.6667 18.6667V10.6667C42.6667 9.19391 43.8606 8 45.3333 8Z" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" stroke="#FAFAFA"/>
+<path id="Stroke_3" d="M10.6667 42.6667H18.6667C20.1394 42.6667 21.3333 43.8606 21.3333 45.3333V53.3333C21.3333 54.8061 20.1394 56 18.6667 56H10.6667C9.19391 56 8 54.8061 8 53.3333V45.3333C8 43.8606 9.19391 42.6667 10.6667 42.6667Z" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" stroke="#FAFAFA"/>
+<path id="Stroke_4" d="M56 42.6667H48C46.5855 42.6667 45.229 43.2286 44.2288 44.2288C43.2286 45.229 42.6667 46.5855 42.6667 48V56" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" stroke="#FAFAFA"/>
+<path id="Stroke_5" d="M56 56V56.0267" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" stroke="#FAFAFA"/>
+<path id="Stroke_6" d="M32 18.6667V26.6667C32 28.0812 31.4381 29.4377 30.4379 30.4379C29.4377 31.4381 28.0812 32 26.6667 32H18.6667" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" stroke="#FAFAFA"/>
+<path id="Stroke_7" d="M8 32H8.02667" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" stroke="#FAFAFA"/>
+<path id="Stroke_8" d="M32 8H32.0267" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" stroke="#FAFAFA"/>
+<path id="Stroke_9" d="M32 42.6667V42.6933" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" stroke="#FAFAFA"/>
+<path id="Stroke_10" d="M42.6667 32H45.3333" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" stroke="#FAFAFA"/>
+<path id="Stroke_11" d="M56 32V32.0267" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" stroke="#FAFAFA"/>
+<path id="Stroke_12" d="M32 56V53.3333" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" stroke="#FAFAFA"/>
+</g>
+</svg>

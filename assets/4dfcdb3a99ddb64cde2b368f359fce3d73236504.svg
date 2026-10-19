@@ -1,0 +1,11 @@
+<svg preserveAspectRatio="none" overflow="visible" style="display: block;" width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g id="Plane--Streamline-Atlas">
+<path id="Vector" d="M12.2344 5.97656V6.98438C12.2332 8.4944 12.1104 10.0019 11.8672 11.4922L11.2422 15.2188L10.7812 18.2031H9.29687L8.79687 15.2188L8.17187 11.4922C7.92867 10.0019 7.80587 8.4944 7.80469 6.98438V5.97656C7.80497 4.70874 8.18007 3.4693 8.88281 2.41406C9.00623 2.22947 9.17205 2.07711 9.36642 1.96973C9.56078 1.86235 9.77803 1.80308 10 1.79688C10.2286 1.79678 10.4537 1.85306 10.6554 1.96071C10.8571 2.06836 11.0291 2.22407 11.1563 2.41406C11.859 3.4693 12.2341 4.70874 12.2344 5.97656Z" stroke-miterlimit="10" stroke="#C8A96A"/>
+<path id="Vector_2" d="M8.75781 15.2188L9.25 18.2031H5.52344V15.9687L8.75781 15.2188Z" stroke-miterlimit="10" stroke="#C8A96A"/>
+<path id="Vector_3" d="M14.4766 15.9687V18.2031H10.75L11.2422 15.2188L14.4766 15.9687Z" stroke-miterlimit="10" stroke="#C8A96A"/>
+<path id="Vector_4" d="M8.13281 11.4922L1.79688 12.9844V10L7.76562 7.01562" stroke-miterlimit="10" stroke="#C8A96A"/>
+<path id="Vector_5" d="M12.2344 7.01562L18.2031 10V12.9844L11.8672 11.4922" stroke-miterlimit="10" stroke="#C8A96A"/>
+<path id="Vector_6" d="M3.28906 7.01562V9.25781" stroke-miterlimit="10" stroke="#C8A96A"/>
+<path id="Vector_7" d="M16.7109 7.01562V9.25781" stroke-miterlimit="10" stroke="#C8A96A"/>
+</g>
+</svg>
