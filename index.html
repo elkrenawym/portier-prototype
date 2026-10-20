@@ -58,6 +58,8 @@ html, body {
   contain: layout paint;
   transition: background-color 400ms ease;
 }
+/* on a phone the stage is the screen: pinned to the top-left corner, as tall as the display */
+body:not(.framed) #device { left: 0; top: 0; transform: scale(var(--scale, 1)); transform-origin: 0 0; }
 body.framed #device {
   border-radius: 54px;
   box-shadow: 0 0 0 10px #1c1c1e, 0 0 0 11px #3a3a3c, 0 60px 120px -20px rgba(0, 0, 0, 0.8), 0 0 160px rgba(200, 169, 106, 0.08);
@@ -555,13 +557,93 @@ textarea.fx-input { display: block; }
   background: linear-gradient(180deg, transparent 0, color-mix(in srgb, var(--k-base, #151517) 85%, transparent) 90px, var(--k-base, #151517) 150px); }
 .veil-scan { display: grid; place-items: center; color: var(--k-accent, #c8a96a); opacity: 1 !important; }
 .veil-scan svg { width: 40px; height: 40px; }
+
+/* ---------- polish: one status language ---------- */
+.tone-green { --tone: var(--k-green, #3dbe8b); }
+.tone-amber { --tone: var(--k-warn, #e6b45a); }
+.tone-red { --tone: var(--k-red, #e5484d); }
+.tone-accent { --tone: var(--k-textAccent, #e6c98f); }
+.tone-neutral { --tone: var(--k-text2, #8a8a8f); }
+.screen .chip-x {
+  background: color-mix(in srgb, var(--tone) 14%, transparent) !important;
+  border: 1px solid color-mix(in srgb, var(--tone) 30%, transparent) !important;
+  padding: 4px 10px !important; gap: 6px !important; align-items: center;
+}
+.screen .chip-x p { text-transform: none !important; color: var(--tone) !important; font: 600 12px/16px Inter, sans-serif !important; letter-spacing: 0 !important; }
+.screen .chip-x [data-name="Dot"], .screen .chip-x [data-name="Dot"] * { background: var(--tone) !important; fill: var(--tone) !important; }
+.screen .chip-x:not(.tone-neutral):not(:has([data-name="Dot"]))::before { content: ""; width: 6px; height: 6px; border-radius: 9px; background: var(--tone); flex: none; }
+.screen .chip-x.tone-neutral { background: color-mix(in srgb, var(--k-text, #fafafa) 6%, transparent) !important; border-color: var(--k-hairline, #2c2c2e) !important; }
+.screen .chip-x.tone-neutral p { color: color-mix(in srgb, var(--k-text, #fafafa) 82%, transparent) !important; }
+
+/* section labels read as labels */
+.screen p.ovl { text-transform: uppercase !important; font-size: 10.5px !important; font-weight: 600 !important; letter-spacing: 0.09em !important; line-height: 14px !important; color: color-mix(in srgb, var(--k-text2, #8a8a8f) 88%, var(--k-text, #fafafa)) !important; }
+
+/* progress through a flow */
+.screen p.step-pill { display: inline-flex !important; align-items: center; gap: 8px; text-transform: none !important; padding: 6px 10px; border-radius: 99px; background: color-mix(in srgb, var(--k-text, #fafafa) 6%, transparent); border: 1px solid var(--k-hairline, #2c2c2e); }
+.step-pill .segs { display: inline-flex; gap: 3px; }
+.step-pill .segs i { width: 14px; height: 4px; border-radius: 4px; background: color-mix(in srgb, var(--k-text, #fafafa) 16%, transparent); }
+.step-pill .segs i.on { background: var(--k-accent, #c8a96a); }
+.step-pill em { font: 600 11.5px/14px Inter, sans-serif; font-style: normal; color: var(--k-text, #fafafa); opacity: 0.85; white-space: nowrap; }
+
+/* ---------- asset card ---------- */
+.screen .ac { display: block !important; padding: 0 !important; overflow: hidden !important; border-radius: 26px !important;
+  background: linear-gradient(180deg, color-mix(in srgb, var(--k-surface, #242426) 100%, transparent), var(--k-surface, #1f1f21)) !important;
+  border: 1px solid color-mix(in srgb, var(--k-text, #fafafa) 7%, transparent) !important;
+  box-shadow: 0 18px 40px -24px var(--k-shadow, rgba(0,0,0,0.7)) !important; transition: transform 160ms var(--ease-out); }
+.screen .ac:active { transform: scale(0.985); }
+.ac-media { position: relative; height: 176px; overflow: hidden; background: var(--k-elevated, #2e2e31); }
+.ac-media img { width: 100%; height: 100%; object-fit: cover; object-position: 50% 58%; display: block; }
+.ac-scrim { position: absolute; inset: 0; background: linear-gradient(180deg, rgba(0,0,0,0.42) 0%, rgba(0,0,0,0) 38%, rgba(0,0,0,0) 62%, rgba(0,0,0,0.28) 100%); }
+.ac-status, .ac-bay { position: absolute; top: 12px; display: inline-flex; align-items: center; gap: 7px; height: 28px; padding: 0 11px; border-radius: 99px;
+  font: 600 12px/1 Inter, sans-serif; color: #fff; background: rgba(18,18,20,0.5); -webkit-backdrop-filter: blur(14px) saturate(1.4); backdrop-filter: blur(14px) saturate(1.4); border: 1px solid rgba(255,255,255,0.14); }
+.ac-status { left: 12px; }
+.ac-bay { right: 12px; font-weight: 500; color: rgba(255,255,255,0.86); }
+.ac-status i { width: 7px; height: 7px; border-radius: 9px; background: var(--tone); box-shadow: 0 0 0 0 color-mix(in srgb, var(--tone) 70%, transparent); }
+.ac-status.pulse i { animation: acPulse 2.2s var(--ease-out) infinite; }
+@keyframes acPulse { 0% { box-shadow: 0 0 0 0 color-mix(in srgb, var(--tone) 70%, transparent); } 70%, 100% { box-shadow: 0 0 0 7px color-mix(in srgb, var(--tone) 0%, transparent); } }
+.ac-body { padding: 16px 16px 16px; }
+.ac-head { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+.ac-head > div { min-width: 0; }
+.ac-head h3 { margin: 0; font: 500 19px/24px Lexend, Inter, sans-serif; letter-spacing: -0.3px; color: var(--k-text, #fafafa); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.ac-head p { margin: 3px 0 0; font: 400 13px/18px Inter, sans-serif; color: var(--k-text2, #8a8a8f); white-space: nowrap; }
+.ac-chev { flex: none; width: 34px; height: 34px; border-radius: 99px; display: grid; place-items: center; background: color-mix(in srgb, var(--k-text, #fafafa) 7%, transparent); }
+.ac svg { width: 15px; height: 15px; fill: none; stroke: currentColor; stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; flex: none; }
+.ac-chev svg { color: var(--k-text, #fafafa); opacity: 0.7; }
+.ac-stats { display: grid; grid-template-columns: 68px 1fr 1fr; margin-top: 14px; padding-top: 13px; border-top: 1px solid color-mix(in srgb, var(--k-text, #fafafa) 8%, transparent); }
+.ac-stats > div { min-width: 0; padding: 0 10px; border-left: 1px solid color-mix(in srgb, var(--k-text, #fafafa) 8%, transparent); }
+.ac-stats > div:first-child { padding-left: 0; border-left: 0; }
+.ac-stats small { display: block; font: 600 10px/13px Inter, sans-serif; letter-spacing: 0.09em; text-transform: uppercase; color: var(--k-text2, #8a8a8f); }
+.ac-stats b { display: flex; align-items: center; gap: 6px; margin-top: 5px; font: 500 13.5px/18px Inter, sans-serif; color: var(--k-text, #fafafa); white-space: nowrap; }
+.ac-stats b span { overflow: hidden; text-overflow: ellipsis; }
+.ac-stats b svg { color: var(--k-text2, #8a8a8f); }
+.ac-stats > div[class*="tone-"] b, .ac-stats > div[class*="tone-"] b svg { color: var(--tone); }
+.ac-stats > div.tone-neutral b { color: var(--k-text2, #8a8a8f); font-size: 13px; }
+.ac-alert, .ac-away { margin-top: 14px; border-radius: 14px; background: color-mix(in srgb, var(--tone) 11%, transparent); border: 1px solid color-mix(in srgb, var(--tone) 22%, transparent); color: var(--tone); }
+.ac-alert { display: flex; align-items: center; gap: 9px; padding: 10px 12px; font: 500 13px/18px Inter, sans-serif; }
+.ac-alert em, .ac-away em { margin-left: auto; font: 600 12.5px/18px Inter, sans-serif; font-style: normal; white-space: nowrap; }
+.ac-away { padding: 11px 12px 12px; }
+.ac-away .row { display: flex; align-items: center; gap: 9px; font: 500 13px/18px Inter, sans-serif; }
+.ac-away .row span { color: var(--k-text, #fafafa); }
+.ac-away .bar { margin-top: 10px; height: 4px; border-radius: 4px; background: color-mix(in srgb, var(--tone) 18%, transparent); overflow: hidden; }
+.ac-away .bar i { display: block; height: 100%; width: calc(var(--p) * 100%); border-radius: 4px; background: var(--tone); transform-origin: left; animation: acBar 1.4s 0.5s var(--ease-out) both; }
+@keyframes acBar { from { transform: scaleX(0); } }
+@media (prefers-reduced-motion: reduce) { .ac-status.pulse i, .ac-away .bar i { animation: none; } }
+
+/* captions the design set in lowercase read in their own case */
+.screen p.sent { text-transform: none !important; }
+/* garage live line: a calm pulsing dot, no hollow ring */
+.garage-live { top: 184px; font: 500 12px/16px Inter, sans-serif; color: var(--k-text2, #8a8a8f); }
+.garage-live i { width: 7px; height: 7px; --tone: var(--k-green, #3dbe8b); background: var(--tone); animation: acPulse 2.2s var(--ease-out) infinite; }
+.garage-live i::after { display: none; }
+/* the privacy veil must actually hide what's under it */
+.screen [data-name="Veil"] { background: color-mix(in srgb, var(--k-base, #151517) 94%, transparent) !important; }
 </style>
 <style>.screen .ic{display:block;-webkit-mask:var(--ic) center/100% 100% no-repeat;mask:var(--ic) center/100% 100% no-repeat}
-#device[data-theme="champagne-light"]{--k-shade:#f7f3ec;--k-base:#f7f3ec;--k-surface:#ffffff;--k-elevated:#efe6d4;--k-inverse:#151517;--k-inverseEnd:#242426;--k-text:#151517;--k-text2:#8a8a8f;--k-textInverse:#f7f3ec;--k-onAccent:#151517;--k-textAccent:#7a5c2b;--k-hairline:#e7e0d3;--k-strong:#7a5c2b;--k-accent:#c8a96a;--k-accentEnd:#ffffff;--k-accentSoft:#f1e6cc;--k-icon:#151517;--k-icon2:#8a8a8f;--k-red:#c2353a;--k-green:#1f8a5e;--k-shadow:rgba(80,60,20,0.14);--bg-base:#f7f3ec;--bg-surface:#ffffff;--bg-elevated:#efe6d4;--bg-inverse:#151517;--text-primary:#151517;--text-secondary:#8a8a8f;--text-inverse:#f7f3ec;--text-on-accent:#151517;--text-accent:#7a5c2b;--border-hairline:#e7e0d3;--border-strong:#7a5c2b;--accent-default:#c8a96a;--accent-gradient-end:#ffffff;--status-positive:#1f8a5e;--status-critical:#c2353a;--x-b-151517:#f7f3ec;--x-t-ffffff:#151517;--x-b-242426:#ffffff;--x-t-fafafa:#151517;--x-t-c8a96a:#7a5c2b;--x-s-151517-base:#f7f3ec;--x-s-c8a96a-accent:#c8a96a;--x-s-ffffff:#151517;--x-s-ffffff-icon:#151517;--x-s-c8a96a:#c8a96a;--x-s-242426-surface:#ffffff;--x-s-242426:#ffffff;--x-s-d9bd84-textAccent:#7a5c2b;--x-s-d9bd84:#7a5c2b;--x-t-f5f5f5:#151517;--x-t-d9bd84:#7a5c2b;--x-t-8a8a8f:#8a8a8f;--x-s-fafafa:#151517;--x-s-232323-hairline:#e7e0d3;--x-s-fafafa-icon:#151517;--x-b-c8a96a:#c8a96a;--x-b-ffffff:#ffffff;--x-b-000000:#f7f3ec;--x-b-0b0b0c:#f7f3ec;--x-b-232323:#e7e0d3;--x-t-e6c98f:#7a5c2b;--x-b-f7f3ec:#151517;--x-bd-c8a96a:#7a5c2b;--x-b-1d1d20:#f7f3ec;--x-b-111113:#f7f3ec;--x-s-151517:#151517;--x-b-0a0a0b:#f7f3ec;--x-s-8a8a8f:#8a8a8f;--x-s-232323:#e7e0d3;--x-s-e5484d:#c2353a;--x-b-252527:#ffffff;--x-s-e6c98f:#7a5c2b;--x-b-e9dcc0:#f1e6cc;--x-b-1a1a1d:#f7f3ec;--x-bd-e6c98f:#7a5c2b;--x-b-1c1c1e:#f7f3ec;--x-bd-ffffff:#151517;--x-t-3dbe8b:#1f8a5e;--x-t-151517:#151517;--x-b-f1e6cc:#f1e6cc;--x-s-3dbe8b:#1f8a5e;--x-b-1a1a1c:#f7f3ec;--x-s-f1e6cc-accentSoft:#f1e6cc;--x-s-2a2a2c-surface:#ffffff;--x-b-2a2a2d:#f7f3ec;--x-b-0e0e0f:#f7f3ec;--x-b-1e1e20:#ffffff;--x-b-e6c98f:#7a5c2b;--x-s-8a8a8f-icon2:#8a8a8f;--x-s-e6c98f-textAccent:#7a5c2b;--x-b-3a3a3d:#efe6d4;--x-b-2a2a2c:#ffffff;--x-b-16191d:#f7f3ec}
-#device[data-theme="monochrome-dark"]{--k-shade:#000000;--k-base:#151517;--k-surface:#242426;--k-elevated:#2e2e31;--k-inverse:#fafafa;--k-inverseEnd:#ffffff;--k-text:#fafafa;--k-text2:#8a8a8f;--k-textInverse:#151517;--k-onAccent:#fafafa;--k-textAccent:#ff5a1f;--k-hairline:#232323;--k-strong:#8a8a8f;--k-accent:#ff5a1f;--k-accentEnd:#ff8a5c;--k-accentSoft:#ffb08f;--k-icon:#fafafa;--k-icon2:#8a8a8f;--k-red:#e5484d;--k-green:#3dbe8b;--k-shadow:rgba(0,0,0,0.5);--bg-base:#151517;--bg-surface:#242426;--bg-elevated:#2e2e31;--bg-inverse:#fafafa;--text-primary:#fafafa;--text-secondary:#8a8a8f;--text-inverse:#151517;--text-on-accent:#fafafa;--text-accent:#ff5a1f;--border-hairline:#232323;--border-strong:#8a8a8f;--accent-default:#ff5a1f;--accent-gradient-end:#ff8a5c;--status-positive:#3dbe8b;--status-critical:#e5484d;--x-b-151517:#151517;--x-t-ffffff:#fafafa;--x-b-242426:#242426;--x-t-fafafa:#fafafa;--x-t-c8a96a:#ff5a1f;--x-s-151517-base:#151517;--x-s-c8a96a-accent:#ff5a1f;--x-s-ffffff:#fafafa;--x-s-ffffff-icon:#fafafa;--x-s-c8a96a:#ff5a1f;--x-s-242426-surface:#242426;--x-s-242426:#242426;--x-s-d9bd84-textAccent:#ff5a1f;--x-s-d9bd84:#ff5a1f;--x-t-f5f5f5:#fafafa;--x-t-d9bd84:#ff5a1f;--x-t-8a8a8f:#8a8a8f;--x-s-fafafa:#fafafa;--x-s-232323-hairline:#232323;--x-s-fafafa-icon:#fafafa;--x-b-c8a96a:#ff5a1f;--x-b-ffffff:#ff8a5c;--x-b-000000:#000000;--x-b-0b0b0c:#151517;--x-b-232323:#232323;--x-t-e6c98f:#ff5a1f;--x-b-f7f3ec:#fafafa;--x-bd-c8a96a:#8a8a8f;--x-b-1d1d20:#151517;--x-b-111113:#151517;--x-s-151517:#fafafa;--x-b-0a0a0b:#151517;--x-s-8a8a8f:#8a8a8f;--x-s-232323:#232323;--x-s-e5484d:#e5484d;--x-b-252527:#242426;--x-s-e6c98f:#ff5a1f;--x-b-e9dcc0:#ffb08f;--x-b-1a1a1d:#151517;--x-bd-e6c98f:#8a8a8f;--x-b-1c1c1e:#151517;--x-bd-ffffff:#fafafa;--x-t-3dbe8b:#3dbe8b;--x-t-151517:#fafafa;--x-b-f1e6cc:#ffb08f;--x-s-3dbe8b:#3dbe8b;--x-b-1a1a1c:#151517;--x-s-f1e6cc-accentSoft:#ffb08f;--x-s-2a2a2c-surface:#242426;--x-b-2a2a2d:#151517;--x-b-0e0e0f:#151517;--x-b-1e1e20:#242426;--x-b-e6c98f:#ff5a1f;--x-s-8a8a8f-icon2:#8a8a8f;--x-s-e6c98f-textAccent:#ff5a1f;--x-b-3a3a3d:#2e2e31;--x-b-2a2a2c:#242426;--x-b-16191d:#151517}
-#device[data-theme="monochrome-light"]{--k-shade:#fafafa;--k-base:#fafafa;--k-surface:#ffffff;--k-elevated:#e4e4e4;--k-inverse:#151517;--k-inverseEnd:#242426;--k-text:#151517;--k-text2:#8a8a8f;--k-textInverse:#fafafa;--k-onAccent:#fafafa;--k-textAccent:#d9430e;--k-hairline:#e4e4e4;--k-strong:#8a8a8f;--k-accent:#ff5a1f;--k-accentEnd:#ff8a5c;--k-accentSoft:#ffd2bf;--k-icon:#151517;--k-icon2:#8a8a8f;--k-red:#c2353a;--k-green:#1f8a5e;--k-shadow:rgba(0,0,0,0.10);--bg-base:#fafafa;--bg-surface:#ffffff;--bg-elevated:#e4e4e4;--bg-inverse:#151517;--text-primary:#151517;--text-secondary:#8a8a8f;--text-inverse:#fafafa;--text-on-accent:#fafafa;--text-accent:#d9430e;--border-hairline:#e4e4e4;--border-strong:#8a8a8f;--accent-default:#ff5a1f;--accent-gradient-end:#ff8a5c;--status-positive:#1f8a5e;--status-critical:#c2353a;--x-b-151517:#fafafa;--x-t-ffffff:#151517;--x-b-242426:#ffffff;--x-t-fafafa:#151517;--x-t-c8a96a:#d9430e;--x-s-151517-base:#fafafa;--x-s-c8a96a-accent:#ff5a1f;--x-s-ffffff:#151517;--x-s-ffffff-icon:#151517;--x-s-c8a96a:#ff5a1f;--x-s-242426-surface:#ffffff;--x-s-242426:#ffffff;--x-s-d9bd84-textAccent:#d9430e;--x-s-d9bd84:#d9430e;--x-t-f5f5f5:#151517;--x-t-d9bd84:#d9430e;--x-t-8a8a8f:#8a8a8f;--x-s-fafafa:#151517;--x-s-232323-hairline:#e4e4e4;--x-s-fafafa-icon:#151517;--x-b-c8a96a:#ff5a1f;--x-b-ffffff:#ff8a5c;--x-b-000000:#fafafa;--x-b-0b0b0c:#fafafa;--x-b-232323:#e4e4e4;--x-t-e6c98f:#d9430e;--x-b-f7f3ec:#151517;--x-bd-c8a96a:#8a8a8f;--x-b-1d1d20:#fafafa;--x-b-111113:#fafafa;--x-s-151517:#fafafa;--x-b-0a0a0b:#fafafa;--x-s-8a8a8f:#8a8a8f;--x-s-232323:#e4e4e4;--x-s-e5484d:#c2353a;--x-b-252527:#ffffff;--x-s-e6c98f:#d9430e;--x-b-e9dcc0:#ffd2bf;--x-b-1a1a1d:#fafafa;--x-bd-e6c98f:#8a8a8f;--x-b-1c1c1e:#fafafa;--x-bd-ffffff:#151517;--x-t-3dbe8b:#1f8a5e;--x-t-151517:#fafafa;--x-b-f1e6cc:#ffd2bf;--x-s-3dbe8b:#1f8a5e;--x-b-1a1a1c:#fafafa;--x-s-f1e6cc-accentSoft:#ffd2bf;--x-s-2a2a2c-surface:#ffffff;--x-b-2a2a2d:#fafafa;--x-b-0e0e0f:#fafafa;--x-b-1e1e20:#ffffff;--x-b-e6c98f:#d9430e;--x-s-8a8a8f-icon2:#8a8a8f;--x-s-e6c98f-textAccent:#d9430e;--x-b-3a3a3d:#e4e4e4;--x-b-2a2a2c:#ffffff;--x-b-16191d:#fafafa}
-#device[data-theme="midnight-dark"]{--k-shade:#000000;--k-base:#0e1a2b;--k-surface:#142338;--k-elevated:#1c2d45;--k-inverse:#f5f7fa;--k-inverseEnd:#ffffff;--k-text:#f5f7fa;--k-text2:#c9d1d9;--k-textInverse:#0e1a2b;--k-onAccent:#0e1a2b;--k-textAccent:#2ec4b6;--k-hairline:#1f2f45;--k-strong:#c9d1d9;--k-accent:#2ec4b6;--k-accentEnd:#ffffff;--k-accentSoft:#b8f0ea;--k-icon:#f5f7fa;--k-icon2:#c9d1d9;--k-red:#e5484d;--k-green:#3dbe8b;--k-shadow:rgba(0,0,0,0.5);--bg-base:#0e1a2b;--bg-surface:#142338;--bg-elevated:#1c2d45;--bg-inverse:#f5f7fa;--text-primary:#f5f7fa;--text-secondary:#c9d1d9;--text-inverse:#0e1a2b;--text-on-accent:#0e1a2b;--text-accent:#2ec4b6;--border-hairline:#1f2f45;--border-strong:#c9d1d9;--accent-default:#2ec4b6;--accent-gradient-end:#ffffff;--status-positive:#3dbe8b;--status-critical:#e5484d;--x-b-151517:#0e1a2b;--x-t-ffffff:#f5f7fa;--x-b-242426:#142338;--x-t-fafafa:#f5f7fa;--x-t-c8a96a:#2ec4b6;--x-s-151517-base:#0e1a2b;--x-s-c8a96a-accent:#2ec4b6;--x-s-ffffff:#f5f7fa;--x-s-ffffff-icon:#f5f7fa;--x-s-c8a96a:#2ec4b6;--x-s-242426-surface:#142338;--x-s-242426:#142338;--x-s-d9bd84-textAccent:#2ec4b6;--x-s-d9bd84:#2ec4b6;--x-t-f5f5f5:#f5f7fa;--x-t-d9bd84:#2ec4b6;--x-t-8a8a8f:#c9d1d9;--x-s-fafafa:#f5f7fa;--x-s-232323-hairline:#1f2f45;--x-s-fafafa-icon:#f5f7fa;--x-b-c8a96a:#2ec4b6;--x-b-ffffff:#ffffff;--x-b-000000:#000000;--x-b-0b0b0c:#0e1a2b;--x-b-232323:#1f2f45;--x-t-e6c98f:#2ec4b6;--x-b-f7f3ec:#f5f7fa;--x-bd-c8a96a:#c9d1d9;--x-b-1d1d20:#0e1a2b;--x-b-111113:#0e1a2b;--x-s-151517:#0e1a2b;--x-b-0a0a0b:#0e1a2b;--x-s-8a8a8f:#c9d1d9;--x-s-232323:#1f2f45;--x-s-e5484d:#e5484d;--x-b-252527:#142338;--x-s-e6c98f:#2ec4b6;--x-b-e9dcc0:#b8f0ea;--x-b-1a1a1d:#0e1a2b;--x-bd-e6c98f:#c9d1d9;--x-b-1c1c1e:#0e1a2b;--x-bd-ffffff:#f5f7fa;--x-t-3dbe8b:#3dbe8b;--x-t-151517:#0e1a2b;--x-b-f1e6cc:#b8f0ea;--x-s-3dbe8b:#3dbe8b;--x-b-1a1a1c:#0e1a2b;--x-s-f1e6cc-accentSoft:#b8f0ea;--x-s-2a2a2c-surface:#142338;--x-b-2a2a2d:#0e1a2b;--x-b-0e0e0f:#0e1a2b;--x-b-1e1e20:#142338;--x-b-e6c98f:#2ec4b6;--x-s-8a8a8f-icon2:#c9d1d9;--x-s-e6c98f-textAccent:#2ec4b6;--x-b-3a3a3d:#1c2d45;--x-b-2a2a2c:#142338;--x-b-16191d:#0e1a2b}
-#device[data-theme="midnight-light"]{--k-shade:#f5f7fa;--k-base:#f5f7fa;--k-surface:#ffffff;--k-elevated:#dce2e9;--k-inverse:#0e1a2b;--k-inverseEnd:#142338;--k-text:#0e1a2b;--k-text2:#3c5a7a;--k-textInverse:#f5f7fa;--k-onAccent:#0e1a2b;--k-textAccent:#13857a;--k-hairline:#dce2e9;--k-strong:#c9d1d9;--k-accent:#2ec4b6;--k-accentEnd:#ffffff;--k-accentSoft:#b8f0ea;--k-icon:#0e1a2b;--k-icon2:#3c5a7a;--k-red:#c2353a;--k-green:#1f8a5e;--k-shadow:rgba(14,26,43,0.12);--bg-base:#f5f7fa;--bg-surface:#ffffff;--bg-elevated:#dce2e9;--bg-inverse:#0e1a2b;--text-primary:#0e1a2b;--text-secondary:#3c5a7a;--text-inverse:#f5f7fa;--text-on-accent:#0e1a2b;--text-accent:#13857a;--border-hairline:#dce2e9;--border-strong:#c9d1d9;--accent-default:#2ec4b6;--accent-gradient-end:#ffffff;--status-positive:#1f8a5e;--status-critical:#c2353a;--x-b-151517:#f5f7fa;--x-t-ffffff:#0e1a2b;--x-b-242426:#ffffff;--x-t-fafafa:#0e1a2b;--x-t-c8a96a:#13857a;--x-s-151517-base:#f5f7fa;--x-s-c8a96a-accent:#2ec4b6;--x-s-ffffff:#0e1a2b;--x-s-ffffff-icon:#0e1a2b;--x-s-c8a96a:#2ec4b6;--x-s-242426-surface:#ffffff;--x-s-242426:#ffffff;--x-s-d9bd84-textAccent:#13857a;--x-s-d9bd84:#13857a;--x-t-f5f5f5:#0e1a2b;--x-t-d9bd84:#13857a;--x-t-8a8a8f:#3c5a7a;--x-s-fafafa:#0e1a2b;--x-s-232323-hairline:#dce2e9;--x-s-fafafa-icon:#0e1a2b;--x-b-c8a96a:#2ec4b6;--x-b-ffffff:#ffffff;--x-b-000000:#f5f7fa;--x-b-0b0b0c:#f5f7fa;--x-b-232323:#dce2e9;--x-t-e6c98f:#13857a;--x-b-f7f3ec:#0e1a2b;--x-bd-c8a96a:#c9d1d9;--x-b-1d1d20:#f5f7fa;--x-b-111113:#f5f7fa;--x-s-151517:#0e1a2b;--x-b-0a0a0b:#f5f7fa;--x-s-8a8a8f:#3c5a7a;--x-s-232323:#dce2e9;--x-s-e5484d:#c2353a;--x-b-252527:#ffffff;--x-s-e6c98f:#13857a;--x-b-e9dcc0:#b8f0ea;--x-b-1a1a1d:#f5f7fa;--x-bd-e6c98f:#c9d1d9;--x-b-1c1c1e:#f5f7fa;--x-bd-ffffff:#0e1a2b;--x-t-3dbe8b:#1f8a5e;--x-t-151517:#0e1a2b;--x-b-f1e6cc:#b8f0ea;--x-s-3dbe8b:#1f8a5e;--x-b-1a1a1c:#f5f7fa;--x-s-f1e6cc-accentSoft:#b8f0ea;--x-s-2a2a2c-surface:#ffffff;--x-b-2a2a2d:#f5f7fa;--x-b-0e0e0f:#f5f7fa;--x-b-1e1e20:#ffffff;--x-b-e6c98f:#13857a;--x-s-8a8a8f-icon2:#3c5a7a;--x-s-e6c98f-textAccent:#13857a;--x-b-3a3a3d:#dce2e9;--x-b-2a2a2c:#ffffff;--x-b-16191d:#f5f7fa}
+#device[data-theme="champagne-light"]{--k-shade:#f7f3ec;--k-base:#f7f3ec;--k-surface:#ffffff;--k-elevated:#efe6d4;--k-inverse:#151517;--k-inverseEnd:#242426;--k-text:#151517;--k-text2:#8a8a8f;--k-textInverse:#f7f3ec;--k-onAccent:#151517;--k-textAccent:#7a5c2b;--k-hairline:#e7e0d3;--k-strong:#7a5c2b;--k-accent:#c8a96a;--k-accentEnd:#ffffff;--k-accentSoft:#f1e6cc;--k-icon:#151517;--k-icon2:#8a8a8f;--k-red:#c2353a;--k-green:#1f8a5e;--k-warn:#9a6410;--k-shadow:rgba(80,60,20,0.14);--bg-base:#f7f3ec;--bg-surface:#ffffff;--bg-elevated:#efe6d4;--bg-inverse:#151517;--text-primary:#151517;--text-secondary:#8a8a8f;--text-inverse:#f7f3ec;--text-on-accent:#151517;--text-accent:#7a5c2b;--border-hairline:#e7e0d3;--border-strong:#7a5c2b;--accent-default:#c8a96a;--accent-gradient-end:#ffffff;--status-positive:#1f8a5e;--status-critical:#c2353a;--x-b-151517:#f7f3ec;--x-t-ffffff:#151517;--x-b-242426:#ffffff;--x-t-fafafa:#151517;--x-t-c8a96a:#7a5c2b;--x-s-151517-base:#f7f3ec;--x-s-c8a96a-accent:#c8a96a;--x-s-ffffff:#151517;--x-s-ffffff-icon:#151517;--x-s-c8a96a:#c8a96a;--x-s-242426-surface:#ffffff;--x-s-242426:#ffffff;--x-s-d9bd84-textAccent:#7a5c2b;--x-s-d9bd84:#7a5c2b;--x-t-f5f5f5:#151517;--x-t-d9bd84:#7a5c2b;--x-t-8a8a8f:#8a8a8f;--x-s-fafafa:#151517;--x-s-232323-hairline:#e7e0d3;--x-s-fafafa-icon:#151517;--x-b-c8a96a:#c8a96a;--x-b-ffffff:#ffffff;--x-b-000000:#f7f3ec;--x-b-0b0b0c:#f7f3ec;--x-b-232323:#e7e0d3;--x-t-e6c98f:#7a5c2b;--x-b-f7f3ec:#151517;--x-bd-c8a96a:#7a5c2b;--x-b-1d1d20:#f7f3ec;--x-b-111113:#f7f3ec;--x-s-151517:#151517;--x-b-0a0a0b:#f7f3ec;--x-s-8a8a8f:#8a8a8f;--x-s-232323:#e7e0d3;--x-s-e5484d:#c2353a;--x-b-252527:#ffffff;--x-s-e6c98f:#7a5c2b;--x-b-e9dcc0:#f1e6cc;--x-b-1a1a1d:#f7f3ec;--x-bd-e6c98f:#7a5c2b;--x-b-1c1c1e:#f7f3ec;--x-bd-ffffff:#151517;--x-t-3dbe8b:#1f8a5e;--x-t-151517:#151517;--x-b-f1e6cc:#f1e6cc;--x-s-3dbe8b:#1f8a5e;--x-b-1a1a1c:#f7f3ec;--x-s-f1e6cc-accentSoft:#f1e6cc;--x-s-2a2a2c-surface:#ffffff;--x-b-2a2a2d:#f7f3ec;--x-b-0e0e0f:#f7f3ec;--x-b-1e1e20:#ffffff;--x-b-e6c98f:#7a5c2b;--x-s-8a8a8f-icon2:#8a8a8f;--x-s-e6c98f-textAccent:#7a5c2b;--x-b-3a3a3d:#efe6d4;--x-b-2a2a2c:#ffffff;--x-b-16191d:#f7f3ec}
+#device[data-theme="monochrome-dark"]{--k-shade:#000000;--k-base:#151517;--k-surface:#242426;--k-elevated:#2e2e31;--k-inverse:#fafafa;--k-inverseEnd:#ffffff;--k-text:#fafafa;--k-text2:#8a8a8f;--k-textInverse:#151517;--k-onAccent:#fafafa;--k-textAccent:#ff5a1f;--k-hairline:#232323;--k-strong:#8a8a8f;--k-accent:#ff5a1f;--k-accentEnd:#ff8a5c;--k-accentSoft:#ffb08f;--k-icon:#fafafa;--k-icon2:#8a8a8f;--k-red:#e5484d;--k-green:#3dbe8b;--k-warn:#e6b45a;--k-shadow:rgba(0,0,0,0.5);--bg-base:#151517;--bg-surface:#242426;--bg-elevated:#2e2e31;--bg-inverse:#fafafa;--text-primary:#fafafa;--text-secondary:#8a8a8f;--text-inverse:#151517;--text-on-accent:#fafafa;--text-accent:#ff5a1f;--border-hairline:#232323;--border-strong:#8a8a8f;--accent-default:#ff5a1f;--accent-gradient-end:#ff8a5c;--status-positive:#3dbe8b;--status-critical:#e5484d;--x-b-151517:#151517;--x-t-ffffff:#fafafa;--x-b-242426:#242426;--x-t-fafafa:#fafafa;--x-t-c8a96a:#ff5a1f;--x-s-151517-base:#151517;--x-s-c8a96a-accent:#ff5a1f;--x-s-ffffff:#fafafa;--x-s-ffffff-icon:#fafafa;--x-s-c8a96a:#ff5a1f;--x-s-242426-surface:#242426;--x-s-242426:#242426;--x-s-d9bd84-textAccent:#ff5a1f;--x-s-d9bd84:#ff5a1f;--x-t-f5f5f5:#fafafa;--x-t-d9bd84:#ff5a1f;--x-t-8a8a8f:#8a8a8f;--x-s-fafafa:#fafafa;--x-s-232323-hairline:#232323;--x-s-fafafa-icon:#fafafa;--x-b-c8a96a:#ff5a1f;--x-b-ffffff:#ff8a5c;--x-b-000000:#000000;--x-b-0b0b0c:#151517;--x-b-232323:#232323;--x-t-e6c98f:#ff5a1f;--x-b-f7f3ec:#fafafa;--x-bd-c8a96a:#8a8a8f;--x-b-1d1d20:#151517;--x-b-111113:#151517;--x-s-151517:#fafafa;--x-b-0a0a0b:#151517;--x-s-8a8a8f:#8a8a8f;--x-s-232323:#232323;--x-s-e5484d:#e5484d;--x-b-252527:#242426;--x-s-e6c98f:#ff5a1f;--x-b-e9dcc0:#ffb08f;--x-b-1a1a1d:#151517;--x-bd-e6c98f:#8a8a8f;--x-b-1c1c1e:#151517;--x-bd-ffffff:#fafafa;--x-t-3dbe8b:#3dbe8b;--x-t-151517:#fafafa;--x-b-f1e6cc:#ffb08f;--x-s-3dbe8b:#3dbe8b;--x-b-1a1a1c:#151517;--x-s-f1e6cc-accentSoft:#ffb08f;--x-s-2a2a2c-surface:#242426;--x-b-2a2a2d:#151517;--x-b-0e0e0f:#151517;--x-b-1e1e20:#242426;--x-b-e6c98f:#ff5a1f;--x-s-8a8a8f-icon2:#8a8a8f;--x-s-e6c98f-textAccent:#ff5a1f;--x-b-3a3a3d:#2e2e31;--x-b-2a2a2c:#242426;--x-b-16191d:#151517}
+#device[data-theme="monochrome-light"]{--k-shade:#fafafa;--k-base:#fafafa;--k-surface:#ffffff;--k-elevated:#e4e4e4;--k-inverse:#151517;--k-inverseEnd:#242426;--k-text:#151517;--k-text2:#8a8a8f;--k-textInverse:#fafafa;--k-onAccent:#fafafa;--k-textAccent:#d9430e;--k-hairline:#e4e4e4;--k-strong:#8a8a8f;--k-accent:#ff5a1f;--k-accentEnd:#ff8a5c;--k-accentSoft:#ffd2bf;--k-icon:#151517;--k-icon2:#8a8a8f;--k-red:#c2353a;--k-green:#1f8a5e;--k-warn:#9a6410;--k-shadow:rgba(0,0,0,0.10);--bg-base:#fafafa;--bg-surface:#ffffff;--bg-elevated:#e4e4e4;--bg-inverse:#151517;--text-primary:#151517;--text-secondary:#8a8a8f;--text-inverse:#fafafa;--text-on-accent:#fafafa;--text-accent:#d9430e;--border-hairline:#e4e4e4;--border-strong:#8a8a8f;--accent-default:#ff5a1f;--accent-gradient-end:#ff8a5c;--status-positive:#1f8a5e;--status-critical:#c2353a;--x-b-151517:#fafafa;--x-t-ffffff:#151517;--x-b-242426:#ffffff;--x-t-fafafa:#151517;--x-t-c8a96a:#d9430e;--x-s-151517-base:#fafafa;--x-s-c8a96a-accent:#ff5a1f;--x-s-ffffff:#151517;--x-s-ffffff-icon:#151517;--x-s-c8a96a:#ff5a1f;--x-s-242426-surface:#ffffff;--x-s-242426:#ffffff;--x-s-d9bd84-textAccent:#d9430e;--x-s-d9bd84:#d9430e;--x-t-f5f5f5:#151517;--x-t-d9bd84:#d9430e;--x-t-8a8a8f:#8a8a8f;--x-s-fafafa:#151517;--x-s-232323-hairline:#e4e4e4;--x-s-fafafa-icon:#151517;--x-b-c8a96a:#ff5a1f;--x-b-ffffff:#ff8a5c;--x-b-000000:#fafafa;--x-b-0b0b0c:#fafafa;--x-b-232323:#e4e4e4;--x-t-e6c98f:#d9430e;--x-b-f7f3ec:#151517;--x-bd-c8a96a:#8a8a8f;--x-b-1d1d20:#fafafa;--x-b-111113:#fafafa;--x-s-151517:#fafafa;--x-b-0a0a0b:#fafafa;--x-s-8a8a8f:#8a8a8f;--x-s-232323:#e4e4e4;--x-s-e5484d:#c2353a;--x-b-252527:#ffffff;--x-s-e6c98f:#d9430e;--x-b-e9dcc0:#ffd2bf;--x-b-1a1a1d:#fafafa;--x-bd-e6c98f:#8a8a8f;--x-b-1c1c1e:#fafafa;--x-bd-ffffff:#151517;--x-t-3dbe8b:#1f8a5e;--x-t-151517:#fafafa;--x-b-f1e6cc:#ffd2bf;--x-s-3dbe8b:#1f8a5e;--x-b-1a1a1c:#fafafa;--x-s-f1e6cc-accentSoft:#ffd2bf;--x-s-2a2a2c-surface:#ffffff;--x-b-2a2a2d:#fafafa;--x-b-0e0e0f:#fafafa;--x-b-1e1e20:#ffffff;--x-b-e6c98f:#d9430e;--x-s-8a8a8f-icon2:#8a8a8f;--x-s-e6c98f-textAccent:#d9430e;--x-b-3a3a3d:#e4e4e4;--x-b-2a2a2c:#ffffff;--x-b-16191d:#fafafa}
+#device[data-theme="midnight-dark"]{--k-shade:#000000;--k-base:#0e1a2b;--k-surface:#142338;--k-elevated:#1c2d45;--k-inverse:#f5f7fa;--k-inverseEnd:#ffffff;--k-text:#f5f7fa;--k-text2:#c9d1d9;--k-textInverse:#0e1a2b;--k-onAccent:#0e1a2b;--k-textAccent:#2ec4b6;--k-hairline:#1f2f45;--k-strong:#c9d1d9;--k-accent:#2ec4b6;--k-accentEnd:#ffffff;--k-accentSoft:#b8f0ea;--k-icon:#f5f7fa;--k-icon2:#c9d1d9;--k-red:#e5484d;--k-green:#3dbe8b;--k-warn:#e6b45a;--k-shadow:rgba(0,0,0,0.5);--bg-base:#0e1a2b;--bg-surface:#142338;--bg-elevated:#1c2d45;--bg-inverse:#f5f7fa;--text-primary:#f5f7fa;--text-secondary:#c9d1d9;--text-inverse:#0e1a2b;--text-on-accent:#0e1a2b;--text-accent:#2ec4b6;--border-hairline:#1f2f45;--border-strong:#c9d1d9;--accent-default:#2ec4b6;--accent-gradient-end:#ffffff;--status-positive:#3dbe8b;--status-critical:#e5484d;--x-b-151517:#0e1a2b;--x-t-ffffff:#f5f7fa;--x-b-242426:#142338;--x-t-fafafa:#f5f7fa;--x-t-c8a96a:#2ec4b6;--x-s-151517-base:#0e1a2b;--x-s-c8a96a-accent:#2ec4b6;--x-s-ffffff:#f5f7fa;--x-s-ffffff-icon:#f5f7fa;--x-s-c8a96a:#2ec4b6;--x-s-242426-surface:#142338;--x-s-242426:#142338;--x-s-d9bd84-textAccent:#2ec4b6;--x-s-d9bd84:#2ec4b6;--x-t-f5f5f5:#f5f7fa;--x-t-d9bd84:#2ec4b6;--x-t-8a8a8f:#c9d1d9;--x-s-fafafa:#f5f7fa;--x-s-232323-hairline:#1f2f45;--x-s-fafafa-icon:#f5f7fa;--x-b-c8a96a:#2ec4b6;--x-b-ffffff:#ffffff;--x-b-000000:#000000;--x-b-0b0b0c:#0e1a2b;--x-b-232323:#1f2f45;--x-t-e6c98f:#2ec4b6;--x-b-f7f3ec:#f5f7fa;--x-bd-c8a96a:#c9d1d9;--x-b-1d1d20:#0e1a2b;--x-b-111113:#0e1a2b;--x-s-151517:#0e1a2b;--x-b-0a0a0b:#0e1a2b;--x-s-8a8a8f:#c9d1d9;--x-s-232323:#1f2f45;--x-s-e5484d:#e5484d;--x-b-252527:#142338;--x-s-e6c98f:#2ec4b6;--x-b-e9dcc0:#b8f0ea;--x-b-1a1a1d:#0e1a2b;--x-bd-e6c98f:#c9d1d9;--x-b-1c1c1e:#0e1a2b;--x-bd-ffffff:#f5f7fa;--x-t-3dbe8b:#3dbe8b;--x-t-151517:#0e1a2b;--x-b-f1e6cc:#b8f0ea;--x-s-3dbe8b:#3dbe8b;--x-b-1a1a1c:#0e1a2b;--x-s-f1e6cc-accentSoft:#b8f0ea;--x-s-2a2a2c-surface:#142338;--x-b-2a2a2d:#0e1a2b;--x-b-0e0e0f:#0e1a2b;--x-b-1e1e20:#142338;--x-b-e6c98f:#2ec4b6;--x-s-8a8a8f-icon2:#c9d1d9;--x-s-e6c98f-textAccent:#2ec4b6;--x-b-3a3a3d:#1c2d45;--x-b-2a2a2c:#142338;--x-b-16191d:#0e1a2b}
+#device[data-theme="midnight-light"]{--k-shade:#f5f7fa;--k-base:#f5f7fa;--k-surface:#ffffff;--k-elevated:#dce2e9;--k-inverse:#0e1a2b;--k-inverseEnd:#142338;--k-text:#0e1a2b;--k-text2:#3c5a7a;--k-textInverse:#f5f7fa;--k-onAccent:#0e1a2b;--k-textAccent:#13857a;--k-hairline:#dce2e9;--k-strong:#c9d1d9;--k-accent:#2ec4b6;--k-accentEnd:#ffffff;--k-accentSoft:#b8f0ea;--k-icon:#0e1a2b;--k-icon2:#3c5a7a;--k-red:#c2353a;--k-green:#1f8a5e;--k-warn:#9a6410;--k-shadow:rgba(14,26,43,0.12);--bg-base:#f5f7fa;--bg-surface:#ffffff;--bg-elevated:#dce2e9;--bg-inverse:#0e1a2b;--text-primary:#0e1a2b;--text-secondary:#3c5a7a;--text-inverse:#f5f7fa;--text-on-accent:#0e1a2b;--text-accent:#13857a;--border-hairline:#dce2e9;--border-strong:#c9d1d9;--accent-default:#2ec4b6;--accent-gradient-end:#ffffff;--status-positive:#1f8a5e;--status-critical:#c2353a;--x-b-151517:#f5f7fa;--x-t-ffffff:#0e1a2b;--x-b-242426:#ffffff;--x-t-fafafa:#0e1a2b;--x-t-c8a96a:#13857a;--x-s-151517-base:#f5f7fa;--x-s-c8a96a-accent:#2ec4b6;--x-s-ffffff:#0e1a2b;--x-s-ffffff-icon:#0e1a2b;--x-s-c8a96a:#2ec4b6;--x-s-242426-surface:#ffffff;--x-s-242426:#ffffff;--x-s-d9bd84-textAccent:#13857a;--x-s-d9bd84:#13857a;--x-t-f5f5f5:#0e1a2b;--x-t-d9bd84:#13857a;--x-t-8a8a8f:#3c5a7a;--x-s-fafafa:#0e1a2b;--x-s-232323-hairline:#dce2e9;--x-s-fafafa-icon:#0e1a2b;--x-b-c8a96a:#2ec4b6;--x-b-ffffff:#ffffff;--x-b-000000:#f5f7fa;--x-b-0b0b0c:#f5f7fa;--x-b-232323:#dce2e9;--x-t-e6c98f:#13857a;--x-b-f7f3ec:#0e1a2b;--x-bd-c8a96a:#c9d1d9;--x-b-1d1d20:#f5f7fa;--x-b-111113:#f5f7fa;--x-s-151517:#0e1a2b;--x-b-0a0a0b:#f5f7fa;--x-s-8a8a8f:#3c5a7a;--x-s-232323:#dce2e9;--x-s-e5484d:#c2353a;--x-b-252527:#ffffff;--x-s-e6c98f:#13857a;--x-b-e9dcc0:#b8f0ea;--x-b-1a1a1d:#f5f7fa;--x-bd-e6c98f:#c9d1d9;--x-b-1c1c1e:#f5f7fa;--x-bd-ffffff:#0e1a2b;--x-t-3dbe8b:#1f8a5e;--x-t-151517:#0e1a2b;--x-b-f1e6cc:#b8f0ea;--x-s-3dbe8b:#1f8a5e;--x-b-1a1a1c:#f5f7fa;--x-s-f1e6cc-accentSoft:#b8f0ea;--x-s-2a2a2c-surface:#ffffff;--x-b-2a2a2d:#f5f7fa;--x-b-0e0e0f:#f5f7fa;--x-b-1e1e20:#ffffff;--x-b-e6c98f:#13857a;--x-s-8a8a8f-icon2:#3c5a7a;--x-s-e6c98f-textAccent:#13857a;--x-b-3a3a3d:#dce2e9;--x-b-2a2a2c:#ffffff;--x-b-16191d:#f5f7fa}
 </style>
 </head>
 <body>
@@ -4400,7 +4482,8 @@ window.PortierFX = (() => {
     liveLine.className = 'garage-live';
     liveLine.innerHTML = '<i></i><span>Live · all 4 cars reporting · updated 2 min ago</span>';
     root.appendChild(liveLine);
-    const H0 = base.offsetHeight + 20;
+    cards.forEach(k => { renderAssetCard(k, fleetOf(k._garage.name)); k._h = k.offsetHeight; });
+    const H0 = base.offsetHeight + 16;
     sec._garage = { cards, H0 };
     layoutGarage(sec, 'all', false);
   }
@@ -4409,10 +4492,13 @@ window.PortierFX = (() => {
     const show = g.cards.filter(k => filter === 'all' || k._garage.status === filter);
     const canvas = sec.querySelector('.canvas');
     const vh = parseFloat(getComputedStyle(sec).height) || 844;
-    canvas.style.height = Math.max(vh / (sec.getBoundingClientRect().height / vh || 1), 214 + show.length * g.H0 + 150) + 'px';
+    const tops = new Map();
+    let y = 222;
+    show.forEach(k => { tops.set(k, y); y += (k._h || g.H0) + 16; });
+    canvas.style.height = Math.max(vh / (sec.getBoundingClientRect().height / vh || 1), y + 130) + 'px';
     g.cards.forEach(k => {
       const visible = show.includes(k);
-      const target = 214 + show.indexOf(k) * g.H0;
+      const target = tops.get(k);
       const from = parseFloat(k.style.top) || target;
       if (visible) {
         k.style.display = '';
@@ -4429,6 +4515,155 @@ window.PortierFX = (() => {
       }
     });
     sec.querySelector('.scroller').scrollTo({ top: 0, behavior: animate ? 'smooth' : 'auto' });
+  }
+
+  /* ---------------- visual polish: one status language, readable labels, clear progress ---------------- */
+  const TONES = [
+    ['red', /\blate\b|not a match|already assigned|notified|not booked|rejected|locked|failed|declined|overdue|can.t/],
+    ['amber', /need|renewal|attention|expires|in progress|quote|draft|today|pending|at service|concierge|due|paused|away|workshop/],
+    ['green', /ready|live|confirmed|done|within|resolved|sealed|assigned|connected|approved|verified|booked|returned|on time|%|available/],
+    ['accent', /recommended|office terms|invitation|vendor|gcc|ask portier/],
+  ];
+  const toneOf = t => (TONES.find(([, re]) => re.test(t)) || ['neutral'])[0];
+  const sentence = t => {
+    t = t.toLowerCase().replace(/\b(vin|gcc|pin|sar|pa|ai|axa|eta)\b/g, w => w.toUpperCase()).replace(/\b[a-z]{1,3}-[\w-]*\d[\w-]*\b/g, w => w.toUpperCase()).replace(/\b(portier|ahmed|khalid|tariq|noura|bentley|riyadh|mercedes|monaco|paris|hercule|bourget)\b/g, w => w[0].toUpperCase() + w.slice(1));
+    return t.charAt(0).toUpperCase() + t.slice(1);
+  };
+  // keep an absolutely placed element's right edge where it was when its width changes
+  function keepRight(el, fn) {
+    const abs = getComputedStyle(el).position === 'absolute';
+    const parent = el.offsetParent;
+    const w0 = el.offsetWidth, l0 = el.offsetLeft;
+    fn();
+    if (!abs || !parent) return;
+    const pw = parent.offsetWidth || dw();
+    if (l0 + w0 / 2 > pw / 2) el.style.left = (l0 + w0 - el.offsetWidth) + 'px';
+  }
+  function chips(sec) {
+    sec.querySelectorAll('[data-name="Chip"], .fx-tag').forEach(c => {
+      if (c.classList.contains('chip-x') || c.closest('.ac, [data-name="Segmented Control"], .hscroll')) return;
+      const p = c.querySelector('p');
+      if (!p || p.children.length || parseFloat(getComputedStyle(p).fontSize) > 13.5) return;
+      const raw = p.textContent.trim();
+      if (!raw) return;
+      const tone = toneOf(raw.toLowerCase());
+      keepRight(c, () => {
+        p.textContent = sentence(raw);
+        c.classList.add('chip-x', 'tone-' + tone);
+      });
+    });
+  }
+  // design set these in lowercase; show them in their own case, sentence-cased when the source is all caps
+  function asCaption(p, t, cs) {
+    if (cs.textTransform !== 'lowercase') return;
+    p.classList.add('sent');
+    if (t === t.toUpperCase() && /[A-Z]/.test(t)) p.textContent = /^km\b/i.test(t) ? t.toLowerCase() : sentence(t);
+  }
+  function overlines(sec) {
+    const root = rootOf(sec);
+    root.querySelectorAll('p').forEach(p => {
+      if (p.children.length || p.style.color || p.closest('.chip-x, [data-name="Chip"], button, [data-name="Button"], [data-name^="Nav"], [data-name="Keyboard"], [data-name^="Key "], [data-name="Segmented Control"], [data-name^="Day "], [data-name="Bubble"], [data-name="Bubble · me"], .ac, .hot-card, [data-name="Invitation card"]')) return;
+      const t = p.textContent.trim();
+      const cs = getComputedStyle(p);
+      if (t.length > 26 && cs.textTransform === 'lowercase') { asCaption(p, t, cs); return; }
+      // a line under a title or a number is a caption, not a section label
+      // inside a block, a line that follows other words is a caption (3 ready · 1 at service), not a label
+      if (p.parentElement !== root) {
+        let prev = p.previousElementSibling, before = false;
+        while (prev) { if (prev.textContent.trim()) { before = true; break; } prev = prev.previousElementSibling; }
+        if (before) { asCaption(p, t, cs); return; }
+      }
+      if (!t || t.length > 26 || /^step \d/i.test(t) || /\d{2}:\d{2}/.test(t)) return;
+      if (parseFloat(cs.fontSize) > 12.5 || !(cs.textTransform === 'lowercase' || t === t.toLowerCase())) return;
+      keepRight(p, () => p.classList.add('ovl'));
+    });
+  }
+  function steps(sec) {
+    const root = rootOf(sec);
+    [...root.querySelectorAll('p')].forEach(p => {
+      const m = p.textContent.trim().match(/^step (\d) of (\d)$/i);
+      if (!m || rel(p, root).y > 120) return;
+      const n = +m[1], of = +m[2];
+      keepRight(p, () => {
+        p.classList.add('step-pill');
+        p.innerHTML = `<span class="segs">${Array.from({ length: of }, (_, i) => `<i class="${i < n ? 'on' : ''}"></i>`).join('')}</span><em>Step ${n} of ${of}</em>`;
+      });
+    });
+  }
+  function fixups(sec) {
+    const root = rootOf(sec);
+    // a flat 'water' slab on the map reads as a broken band, not a river
+    root.querySelectorAll('[data-name="Water"]').forEach(w => { w.style.display = 'none'; });
+    // full-bleed layers drawn at 844 grow with taller screens
+    [...root.children].forEach(el => { if (el.offsetTop === 0 && el.offsetHeight === 844 && root.offsetHeight > 844) el.style.height = '100%'; });
+    // a clock time is not money: no currency mark in front of it
+    root.querySelectorAll('p').forEach(p => {
+      if (!/^\d{1,2}:\d{2}$/.test(p.textContent.trim()) || parseFloat(getComputedStyle(p).fontSize) < 28) return;
+      const prev = p.previousElementSibling;
+      if (prev && prev.querySelector('svg, img, .ic')) prev.style.display = 'none';
+    });
+  }
+
+  /* ---------------- asset cards: the car, its state and what needs doing, at a glance ---------------- */
+  const FLEET = [
+    { re: /Ferrari/, name: 'Ferrari 812 Superfast', spec: '2023 · Grigio Silverstone · V12', health: 92, where: 'Villa garage', keys: 'With Ahmed', status: 'ready', bay: 'Bay 01', photo: '48-19125' },
+    { re: /Cullinan/, name: 'Rolls-Royce Cullinan', spec: '2024 · Black Badge · V12', health: 88, where: 'Villa garage', keys: 'Villa safe', status: 'ready', bay: 'Bay 02', photo: '48-19215', alert: ['Insurance renews in 9 days', 'Review'] },
+    { re: /G 63/, name: 'Mercedes-AMG G 63', spec: '2025 · Obsidian Black · V8', health: 96, where: 'Villa garage', keys: 'With Khalid', status: 'ready', bay: 'Bay 04', photo: '48-20037' },
+    { re: /Bentley/, name: 'Bentley Flying Spur', spec: '2024 · Onyx · W12', health: null, where: 'Bentley Riyadh', keys: 'Custodian', status: 'away', bay: 'Bay 03', photo: '48-20448', away: ['Annual service · brakes', 'Back Wed 18:00', 0.64] },
+  ];
+  const fleetOf = text => FLEET.find(c => c.re.test(text));
+  const healthTone = v => v == null ? 'neutral' : v >= 90 ? 'green' : 'amber';
+  const ICON = {
+    pin: '<svg viewBox="0 0 16 16"><path d="M8 14s4.5-4.2 4.5-7.6A4.5 4.5 0 0 0 3.5 6.4C3.5 9.8 8 14 8 14Z"/><circle cx="8" cy="6.4" r="1.6"/></svg>',
+    key: '<svg viewBox="0 0 16 16"><circle cx="5" cy="11" r="2.6"/><path d="m6.9 9.1 6-6M11 5l1.6 1.6M9.6 6.4l1.3 1.3"/></svg>',
+    pulse: '<svg viewBox="0 0 16 16"><path d="M1.5 8h3l1.6-3.5 3 7 1.6-3.5h3.8"/></svg>',
+    alert: '<svg viewBox="0 0 16 16"><circle cx="8" cy="8" r="6.2"/><path d="M8 4.8v3.6M8 10.9v.1"/></svg>',
+    wrench: '<svg viewBox="0 0 16 16"><path d="M10.4 2.2a3.4 3.4 0 0 0-3.9 4.5L2.3 10.9a1.4 1.4 0 0 0 2 2l4.2-4.2a3.4 3.4 0 0 0 4.5-3.9l-2 2-1.9-.5-.5-1.9 1.8-2.2Z"/></svg>',
+    chev: '<svg viewBox="0 0 16 16"><path d="m6 3.5 4.5 4.5L6 12.5"/></svg>',
+  };
+  function renderAssetCard(k, d) {
+    // the same photograph of each car everywhere: the one on its passport
+    const old = k.querySelector('[data-name="Image"] img');
+    const tpl = document.getElementById('t-' + d.photo);
+    const alt = tpl && tpl.content.querySelector('[data-name^="Photo"] img');
+    const src = (alt && alt.getAttribute('src')) || (old && old.getAttribute('src'));
+    const hv = d.health == null ? 'In workshop' : d.health;
+    const status = d.status === 'ready' ? ['green', 'Ready', true] : ['amber', 'At service', false];
+    k.classList.add('ac');
+    k.style.height = 'auto';
+    k.innerHTML = `
+      <div class="ac-media">${src ? `<img alt="" src="${src}">` : ''}<div class="ac-scrim"></div>
+        <span class="ac-status tone-${status[0]}${status[2] ? ' pulse' : ''}"><i></i>${status[1]}</span>
+        <span class="ac-bay">${d.bay}</span>
+      </div>
+      <div class="ac-body">
+        <div class="ac-head"><div><h3>${d.name}</h3><p>${d.spec}</p></div><span class="ac-chev">${ICON.chev}</span></div>
+        <div class="ac-stats">
+          <div class="tone-${healthTone(d.health)}"><small>Health</small><b>${ICON.pulse}<span>${hv}</span></b></div>
+          <div><small>Location</small><b>${ICON.pin}<span>${d.where}</span></b></div>
+          <div><small>Keys</small><b>${ICON.key}<span>${d.keys}</span></b></div>
+        </div>
+        ${d.alert ? `<div class="ac-alert tone-amber">${ICON.alert}<span>${d.alert[0]}</span><em>${d.alert[1]}</em></div>` : ''}
+        ${d.away ? `<div class="ac-away tone-amber"><div class="row">${ICON.wrench}<span>${d.away[0]}</span><em>${d.away[1]}</em></div><div class="bar"><i style="--p:${d.away[2]}"></i></div></div>` : ''}
+      </div>`;
+  }
+  function assetCards(sec) {
+    const root = rootOf(sec);
+    const over = { '48:18160': { keys: 'With you' } };
+    root.querySelectorAll('[data-name="Asset Card"]').forEach(k => {
+      if (k.classList.contains('ac')) return;
+      const d = k._garage || fleetOf(k.textContent);
+      if (!d) return;
+      const top = k.offsetTop, h0 = k.offsetHeight;
+      renderAssetCard(k, Object.assign({}, fleetOf(d.name || k.textContent), over[sec.dataset.id] || {}));
+      if (sec.dataset.id === '48:18958') return;
+      // everything below the card moves down by however much taller it became
+      const delta = k.offsetHeight - h0;
+      if (!delta) return;
+      [...root.children].forEach(el => { if (el !== k && el.offsetTop >= top + h0 - 4 && !/^Nav/.test(el.dataset.name || '')) el.style.top = (el.offsetTop + delta) + 'px'; });
+      const canvas = sec.querySelector('.canvas');
+      if (canvas && canvas.style.height) canvas.style.height = (parseFloat(canvas.style.height) + delta) + 'px';
+    });
   }
 
   /* ---------------- notifications: a live bell and an iOS-style banner ---------------- */
@@ -4624,6 +4859,11 @@ window.PortierFX = (() => {
     try {
       garageList(sec);
       adaptWidth(sec);
+      assetCards(sec);
+      chips(sec);
+      overlines(sec);
+      steps(sec);
+      fixups(sec);
       if (id === '26:8') welcomeVideo(sec);
       alphaVideos(sec);
       pinBottom(sec, ctx);
@@ -4677,6 +4917,13 @@ window.PortierFX = (() => {
   // DW: the device width in design points. Phones wider than the 390pt design get more room,
   // like a native layout, instead of a zoomed-up copy; narrower phones scale down.
   let VH = 844, DW = W;
+  const standalone = navigator.standalone === true || matchMedia('(display-mode: standalone)').matches;
+  const probe = document.createElement('div');
+  probe.style.cssText = 'position:fixed;left:0;top:0;bottom:0;width:1px;visibility:hidden;pointer-events:none';
+  document.body.appendChild(probe);
+  // whatever shows around the stage (overscroll, rounding) takes the app's own background
+  const paintRoot = () => { document.documentElement.style.background = document.body.style.background = getComputedStyle(device).backgroundColor; };
+  new MutationObserver(() => setTimeout(paintRoot, 450)).observe(device, { attributes: true, attributeFilter: ['data-theme'] });
   function fit() {
     const vv = window.visualViewport;
     const vw = vv ? vv.width : window.innerWidth, vh = vv ? vv.height : window.innerHeight;
@@ -4686,7 +4933,11 @@ window.PortierFX = (() => {
     if (phone) {
       DW = Math.round(Math.min(Math.max(vw, W), 440));
       scale = vw / DW;
-      VH = Math.round(vh / scale);
+      // fill the whole screen: as an installed app iOS can under-report the viewport, so take
+      // the tallest honest measure (layout box, inner height, and the screen itself when standalone)
+      let h = Math.max(vh, window.innerHeight, probe.offsetHeight);
+      if (standalone) h = Math.max(h, innerWidth < innerHeight ? Math.max(screen.width, screen.height) : Math.min(screen.width, screen.height));
+      VH = Math.round(h / scale);
     } else {
       DW = W;
       VH = 844;
@@ -4695,8 +4946,10 @@ window.PortierFX = (() => {
     device.style.setProperty('--scale', scale);
     device.style.setProperty('--vh', VH + 'px');
     device.style.setProperty('--dw', DW + 'px');
+    if (phone) paintRoot();
   }
   fit();
+  setTimeout(fit, 300);
   addEventListener('resize', fit);
   device.addEventListener('scroll', () => { device.scrollTop = 0; device.scrollLeft = 0; });
   window.visualViewport && window.visualViewport.addEventListener('resize', fit);
